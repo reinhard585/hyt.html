@@ -1,35 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#FFB3D9">
+<title>💕 a little question for you 💕</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bubblegum+Sans&family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  :root {
+    --pink-50: #FFF5F9;
+    --pink-100: #FFE4ED;
+    --pink-200: #FFCDDE;
+    --pink-300: #FFB3D9;
+    --pink-400: #FF8FB8;
+    --pink-500: #FF6FA5;
+    --pink-600: #E91E63;
+    --pink-700: #C2185B;
+    --gold: #FFD700;
+    --cream: #FFFAFC;
+    --shadow-pink: 0 20px 60px rgba(255, 105, 158, 0.25);
+    --shadow-soft: 0 4px 15px rgba(255, 105, 158, 0.15);
+  }
+
+  html, body { height: 100%; overflow: hidden; }
+
+  body {
+    font-family: 'Quicksand', sans-serif;
+    background: linear-gradient(135deg, #FFD9E8 0%, #FFE8F0 30%, #FFF5FA 60%, #FFE0EC 100%);
+    position: relative;
+    color: #5A2D4A;
+    overflow: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 20% 20%, rgba(255, 182, 213, 0.5) 0%, transparent 40%),
+      radial-gradient(circle at 80% 80%, rgba(255, 192, 220, 0.4) 0%, transparent 40%),
+      radial-gradient(circle at 50% 50%, rgba(255, 224, 237, 0.4) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 10% 80%, rgba(255, 215, 0, 0.15) 0%, transparent 30%),
+      radial-gradient(circle at 90% 10%, rgba(255, 143, 184, 0.2) 0%, transparent 30%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Floating background */
+  .float-layer {
+    position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 1;
+  }
+  .floater {
+    position: absolute;
+    animation: floatUp linear infinite;
+    user-select: none; will-change: transform;
+  }
+  @keyframes floatUp {
+    0%   { transform: translateY(110vh) rotate(0deg)   scale(0.8); opacity: 0; }
+    10%  { opacity: 0.65; }
+    90%  { opacity: 0.65; }
+    100% { transform: translateY(-10vh) rotate(360deg) scale(1.15); opacity: 0; }
+  }
+
+  /* Main container */
+  .app {
+    position: relative; z-index: 10;
+    height: 100vh; width: 100vw;
+    display: flex; align-items: center; justify-content: center;
+    padding: 16px;
+  }
+
+  /* Screens */
+  .screen {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    padding: 16px;
+    opacity: 0; transform: scale(0.85) translateY(20px);
+    pointer-events: none;
+    transition: opacity 0.6s ease, transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .screen.active {
+    opacity: 1; transform: scale(1) translateY(0); pointer-events: auto;
+  }
+
+  .card {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 2px solid rgba(255, 179, 217, 0.4);
+    border-radius: 36px;
+    padding: 40px 32px;
+    max-width: 460px; width: 100%;
+    box-shadow: var(--shadow-pink);
+    text-align: center;
+    position: relative;
+    overflow: visible;
+  }
+
+  .card::before {
+    content: '';
+    position: absolute; inset: -3px;
+    border-radius: 36px;
+    background: linear-gradient(135deg, rgba(255, 179, 217, 0.7), rgba(255, 143, 184, 0.4), rgba(255, 215, 0, 0.3));
+    z-index: -1;
+    filter: blur(18px);
+    opacity: 0.7;
+  }
+
+  /* Hello Kitty character */
+  .kitty-container {
+    width: 180px; height: 180px;
+    margin: 0 auto 20px;
+    position: relative;
+    animation: bob 3.5s ease-in-out infinite;
+  }
+  @keyframes bob {
+    0%, 100% { transform: translateY(0) rotate(-2deg); }
+    50%      { transform: translateY(-12px) rotate(2deg); }
+  }
+  .kitty-svg {
+    width: 100%; height: 100%;
+    filter: drop-shadow(0 8px 20px rgba(255, 105, 158, 0.35));
+  }
+  .kitty-sparkles { position: absolute; inset: 0; pointer-events: none; }
+  .kitty-sparkles .sp {
+    position: absolute;
+    animation: twinkle 1.8s ease-in-out infinite;
+  }
+  @keyframes twinkle {
+    0%, 100% { opacity: 0; transform: scale(0) rotate(0deg); }
+    50%      { opacity: 1; transform: scale(1) rotate(180deg); }
+  }
+
+  /* Kitty blink */
+  .eye { transform-origin: center; animation: blink 4.5s infinite; }
+  @keyframes blink {
+    0%, 92%, 100% { transform: scaleY(1); }
+    94%, 98%      { transform: scaleY(0.1); }
+  }
+
+  /* Question screen */
+  .question-text {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: 30px;
+    color: #C2185B;
+    margin-bottom: 6px;
+    line-height: 1.25;
+    text-shadow: 2px 2px 0 rgba(255, 179, 217, 0.5);
+  }
+  .sub-text {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 15px;
+    color: #B0708C;
+    margin-bottom: 28px;
+    font-weight: 500;
+  }
+
+  /* Buttons */
+  .btn-row {
+    display: flex; gap: 14px;
+    justify-content: center;
+    margin-top: 20px;
+    min-height: 70px;
+    align-items: center;
+    position: relative;
+  }
+  .btn {
+    font-family: 'Fredoka', sans-serif;
+    font-size: 17px; font-weight: 600;
+    padding: 16px 38px;
+    border-radius: 50px;
+    border: none; cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+    text-transform: lowercase;
+    letter-spacing: 0.5px;
+    position: relative;
+  }
+  .btn-yes {
+    background: linear-gradient(135deg, #FF6FA5, #E91E63);
+    color: white;
+    box-shadow: 0 8px 25px rgba(233, 30, 99, 0.45);
+    z-index: 2;
+    animation: pulseYes 2s ease-in-out infinite;
+  }
+  @keyframes pulseYes {
+    0%, 100% { box-shadow: 0 8px 25px rgba(233, 30, 99, 0.45); }
+    50%      { box-shadow: 0 8px 35px rgba(233, 30, 99, 0.7), 0 0 0 8px rgba(255, 111, 165, 0.2); }
+  }
+  .btn-yes:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 12px 35px rgba(233, 30, 99, 0.6);
+  }
+  .btn-yes:active { transform: translateY(-1px) scale(1.02); }
+  .btn-no {
+    background: white;
+    color: #B0708C;
+    border: 2px solid #FFB3D9;
+    box-shadow: 0 4px 15px rgba(255, 105, 158, 0.2);
+  }
+  .btn-no.dodging {
+    position: absolute;
+    z-index: 5;
+    transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  /* Form screen */
+  .yay-text {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: 40px;
+    color: #E91E63;
+    margin-bottom: 6px;
+    text-shadow: 2px 2px 0 rgba(255, 179, 217, 0.5);
+    animation: yayBounce 0.9s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  @keyframes yayBounce {
+    0%   { transform: scale(0) rotate(-20deg); opacity: 0; }
+    60%  { transform: scale(1.3) rotate(8deg);  opacity: 1; }
+    100% { transform: scale(1)   rotate(0deg); }
+  }
+
+  .form-group { margin: 18px 0; text-align: left; }
+  .form-label {
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 600;
+    color: #C2185B;
+    font-size: 15px;
+    margin-bottom: 8px;
+    display: block;
+    padding-left: 8px;
+  }
+  .form-input {
+    width: 100%;
+    padding: 14px 20px;
+    border-radius: 25px;
+    border: 2px solid #FFB3D9;
+    background: rgba(255, 255, 255, 0.85);
+    font-family: 'Quicksand', sans-serif;
+    font-size: 15px;
+    color: #5A2D4A;
+    transition: all 0.3s ease;
+    outline: none;
+  }
+  .form-input:focus {
+    border-color: #FF6FA5;
+    background: white;
+    box-shadow: 0 0 0 5px rgba(255, 111, 165, 0.18);
+  }
+  .form-input::placeholder { color: #D4A0B8; font-style: italic; }
+
+  .submit-btn {
+    background: linear-gradient(135deg, #FF6FA5, #E91E63);
+    color: white;
+    font-family: 'Fredoka', sans-serif;
+    font-size: 17px; font-weight: 600;
+    padding: 14px 50px;
+    border-radius: 50px;
+    border: none; cursor: pointer;
+    box-shadow: 0 8px 25px rgba(233, 30, 99, 0.45);
+    margin-top: 15px;
+    transition: all 0.3s ease;
+  }
+  .submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(233, 30, 99, 0.55);
+  }
+
+  /* Sending state */
+  .submit-btn.sending {
+    background: linear-gradient(135deg, #FFB3D9, #FF8FB8);
+    cursor: wait;
+    transform: none;
+    box-shadow: 0 6px 18px rgba(255, 143, 184, 0.4);
+    pointer-events: none;
+    animation: sendingGlow 1.4s ease-in-out infinite;
+  }
+  @keyframes sendingGlow {
+    0%, 100% { box-shadow: 0 6px 18px rgba(255, 143, 184, 0.4); }
+    50%      { box-shadow: 0 6px 22px rgba(255, 143, 184, 0.7), 0 0 0 6px rgba(255, 179, 217, 0.3); }
+  }
+  .sending-dots {
+    display: inline-flex;
+    gap: 4px;
+    margin-left: 8px;
+    align-items: center;
+    vertical-align: middle;
+  }
+  .sending-dots i {
+    display: block;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: white;
+    animation: dotBounce 1.2s ease-in-out infinite;
+  }
+  .sending-dots i:nth-child(2) { animation-delay: 0.18s; }
+  .sending-dots i:nth-child(3) { animation-delay: 0.36s; }
+  @keyframes dotBounce {
+    0%, 60%, 100% { transform: translateY(0);   opacity: 0.55; }
+    30%           { transform: translateY(-7px); opacity: 1;    }
+  }
+  .sending-msg {
+    margin-top: 14px;
+    font-size: 13px;
+    color: #C2185B;
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 600;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 22px;
+  }
+  .sending-msg.show { opacity: 1; transform: translateY(0); }
+  .sending-msg .plane {
+    display: inline-block;
+    animation: planeFly 1.4s ease-in-out infinite;
+  }
+  @keyframes planeFly {
+    0%   { transform: translate(0, 0)    rotate(-12deg); }
+    50%  { transform: translate(8px, -5px) rotate(18deg); }
+    100% { transform: translate(0, 0)    rotate(-12deg); }
+  }
+
+  /* Result screen */
+  .result-content { padding: 25px 0 10px; }
+  .good-girl {
+    font-family: 'Bubblegum Sans', cursive;
+    font-size: 56px;
+    color: #E91E63;
+    text-shadow: 3px 3px 0 rgba(255, 179, 217, 0.6);
+    margin-bottom: 18px;
+    line-height: 1.05;
+    animation: goodGirlBounce 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  @keyframes goodGirlBounce {
+    0%   { transform: scale(0) rotate(-180deg); opacity: 0; }
+    50%  { transform: scale(1.25) rotate(10deg); }
+    100% { transform: scale(1)    rotate(0deg);   opacity: 1; }
+  }
+  .kiss {
+    font-size: 60px;
+    animation: kiss 1.2s ease-in-out infinite;
+    display: inline-block;
+  }
+  @keyframes kiss {
+    0%, 100% { transform: scale(1)    rotate(-6deg); }
+    50%      { transform: scale(1.18) rotate(6deg); }
+  }
+  .proud-text {
+    font-size: 17px;
+    color: #C2185B;
+    margin-bottom: 22px;
+    font-family: 'Fredoka', sans-serif;
+    font-weight: 500;
+  }
+  .answer-display {
+    background: rgba(255, 240, 246, 0.7);
+    border-radius: 25px;
+    padding: 20px;
+    margin: 18px 0;
+    border: 2px dashed #FFB3D9;
+    text-align: left;
+  }
+  .answer-item {
+    margin: 10px 0;
+    font-size: 14px;
+    color: #5A2D4A;
+    line-height: 1.5;
+  }
+  .answer-item strong {
+    color: #C2185B;
+    font-family: 'Fredoka', sans-serif;
+    display: block;
+    font-size: 13px;
+    margin-bottom: 4px;
+  }
+  .answer-item span {
+    font-weight: 500;
+    word-break: break-word;
+  }
+  .footer-note {
+    margin-top: 22px;
+    font-size: 14px;
+    color: #B0708C;
+    font-style: italic;
+  }
+  .mega-heart {
+    position: absolute;
+    font-size: 38px;
+    animation: megaFloat 3s ease-in-out infinite;
+    pointer-events: none;
+  }
+  @keyframes megaFloat {
+    0%, 100% { transform: translateY(0)    scale(1);   opacity: 0.75; }
+    50%      { transform: translateY(-25px) scale(1.1); opacity: 1; }
+  }
+
+  /* Confetti */
+  .confetti-layer {
+    position: fixed; inset: 0;
+    pointer-events: none;
+    z-index: 100;
+    overflow: hidden;
+  }
+  .confetti {
+    position: absolute;
+    width: 10px; height: 10px;
+    animation: confettiFall linear forwards;
+  }
+  @keyframes confettiFall {
+    0%   { transform: translateY(-10vh) rotate(0deg);   opacity: 1; }
+    100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+  }
 
   /* Patting scene (hand + kitty) on result screen */
   .petting-scene {
     position: relative;
-    width: 200px;
-    height: 210px;
-    margin: 0 auto 10px;
     width: 220px;
     height: 220px;
     margin: 0 auto 14px;
   }
   .patting-hand {
     position: absolute;
-    top: -8px;
     top: -6px;
     left: 50%;
-    margin-left: -42px;
-    width: 84px; height: 84px;
-    animation: pat 0.9s ease-in-out infinite;
-    filter: drop-shadow(0 6px 14px rgba(255, 105, 158, 0.4));
     margin-left: -50px;
     width: 100px; height: 110px;
     animation: patRealistic 1.2s cubic-bezier(0.45, 0, 0.55, 1) infinite;
     filter: drop-shadow(0 8px 18px rgba(255, 105, 158, 0.4));
     z-index: 5;
-    transform-origin: center 70%;
     transform-origin: center 80%;
   }
-  @keyframes pat {
-    0%, 100% { transform: translateY(0)    rotate(-10deg) scale(1);    }
-    45%      { transform: translateY(18px) rotate(12deg)  scale(0.95); }
-    55%      { transform: translateY(18px) rotate(12deg)  scale(0.95); }
   @keyframes patRealistic {
     0%, 100% { transform: translateY(0)    rotate(-3deg) scale(1);     }
     25%      { transform: translateY(6px)  rotate(0deg)  scale(0.985); }
@@ -41,18 +457,12 @@
     position: absolute;
     bottom: 0;
     left: 50%;
-    margin-left: -75px;
-    width: 150px; height: 150px;
-    animation: headBob 0.9s ease-in-out infinite;
     margin-left: -80px;
     width: 160px; height: 160px;
     animation: headReact 1.2s ease-in-out infinite;
     filter: drop-shadow(0 8px 18px rgba(255, 105, 158, 0.3));
     transform-origin: center 75%;
   }
-  @keyframes headBob {
-    0%, 100% { transform: translateY(0)    rotate(0deg);  }
-    50%      { transform: translateY(-3px) rotate(-1deg); }
   @keyframes headReact {
     0%, 100% { transform: translateY(0)    scaleY(1)    scaleX(1);    }
     45%, 55% { transform: translateY(3px)  scaleY(0.95) scaleX(1.025); }  /* squish on pat */
@@ -97,18 +507,47 @@
   .hearts-around {
     position: absolute;
     inset: 0;
+    pointer-events: none;
+  }
+  .hearts-around span {
+    position: absolute;
+    font-size: 20px;
+    animation: heartFloat 2.6s ease-in-out infinite;
+    opacity: 0;
+  }
+  @keyframes heartFloat {
+    0%   { transform: translateY(0)    scale(0.7); opacity: 0;   }
+    30%  { opacity: 0.9; }
+    50%  { transform: translateY(-22px) scale(1.1); opacity: 0.9; }
+    100% { transform: translateY(-44px) scale(0.6); opacity: 0;   }
+  }
+
+  /* Mobile */
+  @media (max-width: 480px) {
+    .card        { padding: 30px 22px; border-radius: 28px; }
+    .question-text { font-size: 23px; }
+    .good-girl   { font-size: 42px; }
+    .yay-text    { font-size: 34px; }
     .kitty-container { width: 150px; height: 150px; }
     .btn         { padding: 14px 30px; font-size: 16px; }
     .btn-row     { min-height: 60px; }
-    .petting-scene { width: 180px; height: 195px; }
-    .patting-hand  { width: 70px; height: 70px; margin-left: -35px; }
-    .patting-kitty { width: 130px; height: 130px; margin-left: -65px; }
     .petting-scene { width: 190px; height: 200px; }
     .patting-hand  { width: 85px; height: 95px; margin-left: -42px; }
     .patting-kitty { width: 135px; height: 135px; margin-left: -67px; }
   }
   @media (max-width: 360px) {
     .question-text { font-size: 20px; }
+    .good-girl   { font-size: 36px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="float-layer" id="floatLayer" aria-hidden="true"></div>
+
+<div class="app">
+  <!-- ===== Screen 1: The Question ===== -->
+  <div class="screen active" id="screen-question">
     <div class="card">
       <div class="kitty-container">
         <svg class="kitty-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -135,14 +574,6 @@
           <!-- Ears -->
           <polygon points="40,70 55,25 90,60" fill="white" stroke="#E91E63" stroke-width="2.5" stroke-linejoin="round"/>
           <polygon points="110,60 145,25 160,70" fill="white" stroke="#E91E63" stroke-width="2.5" stroke-linejoin="round"/>
-          <polygon points="50,65 60,38 82,60" fill="#FFD9E8" opacity="0.6"/>
-          <polygon points="118,60 140,38 150,65" fill="#FFD9E8" opacity="0.6"/>
-          <!-- Bow -->
-          <g transform="translate(50, 35)">
-            <path d="M -22,-2 Q -16,-14 0,-9 Q 16,-14 22,-2 Q 16,10 0,5 Q -16,10 -22,-2 Z"
-                  fill="#E91E63" stroke="#C2185B" stroke-width="1.5" stroke-linejoin="round"/>
-            <circle r="6" fill="#FFD700" stroke="#FFA000" stroke-width="1"/>
-            <circle r="2.5" fill="#FFA000"/>
           <polygon points="55,38 73,42 80,62" fill="url(#earInnerQ)" opacity="0.85"/>
           <polygon points="127,42 145,38 142,62" fill="url(#earInnerQ)" opacity="0.85"/>
 
@@ -157,27 +588,6 @@
           </g>
 
           <!-- Face -->
-          <ellipse cx="100" cy="115" rx="75" ry="68" fill="white" stroke="#E91E63" stroke-width="2.5"/>
-          <!-- Cheeks -->
-          <ellipse cx="55" cy="130" rx="13" ry="7.5" fill="#FFB3D9" opacity="0.7"/>
-          <ellipse cx="145" cy="130" rx="13" ry="7.5" fill="#FFB3D9" opacity="0.7"/>
-          <!-- Eyes -->
-          <ellipse class="eye" cx="75" cy="105" rx="6" ry="10" fill="black"/>
-          <ellipse class="eye" cx="125" cy="105" rx="6" ry="10" fill="black"/>
-          <circle cx="76.5" cy="101" r="2.2" fill="white"/>
-          <circle cx="126.5" cy="101" r="2.2" fill="white"/>
-          <!-- Nose -->
-          <ellipse cx="100" cy="125" rx="5" ry="3.2" fill="#FFD700" stroke="#FFA000" stroke-width="0.8"/>
-          <!-- Mouth -->
-          <path d="M 100,128 Q 100,140 92,142" fill="none" stroke="black" stroke-width="1.8" stroke-linecap="round"/>
-          <path d="M 100,128 Q 100,140 108,142" fill="none" stroke="black" stroke-width="1.8" stroke-linecap="round"/>
-          <!-- Whiskers -->
-          <line x1="30" y1="125" x2="65" y2="128" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
-          <line x1="30" y1="135" x2="65" y2="135" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
-          <line x1="30" y1="145" x2="65" y2="142" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
-          <line x1="135" y1="128" x2="170" y2="125" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
-          <line x1="135" y1="135" x2="170" y2="135" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
-          <line x1="135" y1="142" x2="170" y2="145" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
           <ellipse cx="100" cy="115" rx="73" ry="66" fill="url(#faceQ)" stroke="#E91E63" stroke-width="2.5"/>
           <ellipse cx="100" cy="165" rx="50" ry="8" fill="#E91E63" opacity="0.05"/>
 
@@ -210,6 +620,24 @@
         </svg>
         <div class="kitty-sparkles" aria-hidden="true">
           <span class="sp" style="top:-8px; left:0;  font-size:20px; animation-delay:0s;">✨</span>
+          <span class="sp" style="top:-4px; right:0; font-size:18px; animation-delay:0.5s;">💖</span>
+          <span class="sp" style="bottom:0; left:18px;  font-size:16px; animation-delay:1s;">⭐</span>
+          <span class="sp" style="bottom:8px; right:8px; font-size:22px; animation-delay:1.5s;">✨</span>
+        </div>
+      </div>
+
+      <h1 class="question-text">wanna have sex with daddy? 💕</h1>
+      <p class="sub-text">please say yes... 🥺👉👈</p>
+
+      <div class="btn-row" id="btnRow">
+        <button class="btn btn-yes" id="yesBtn" type="button">yes 💖</button>
+        <button class="btn btn-no"  id="noBtn"  type="button">no</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Screen 2: The Form ===== -->
+  <div class="screen" id="screen-form">
     <div class="card">
       <div class="kitty-container" style="width:130px; height:130px; margin-bottom:15px;">
         <svg class="kitty-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -235,13 +663,6 @@
 
           <polygon points="40,70 55,25 90,60" fill="white" stroke="#E91E63" stroke-width="2.5" stroke-linejoin="round"/>
           <polygon points="110,60 145,25 160,70" fill="white" stroke="#E91E63" stroke-width="2.5" stroke-linejoin="round"/>
-          <polygon points="50,65 60,38 82,60" fill="#FFD9E8" opacity="0.6"/>
-          <polygon points="118,60 140,38 150,65" fill="#FFD9E8" opacity="0.6"/>
-          <g transform="translate(50, 35)">
-            <path d="M -22,-2 Q -16,-14 0,-9 Q 16,-14 22,-2 Q 16,10 0,5 Q -16,10 -22,-2 Z"
-                  fill="#E91E63" stroke="#C2185B" stroke-width="1.5" stroke-linejoin="round"/>
-            <circle r="6" fill="#FFD700" stroke="#FFA000" stroke-width="1"/>
-            <circle r="2.5" fill="#FFA000"/>
           <polygon points="55,38 73,42 80,62" fill="url(#earInnerF)" opacity="0.85"/>
           <polygon points="127,42 145,38 142,62" fill="url(#earInnerF)" opacity="0.85"/>
 
@@ -253,27 +674,11 @@
             <ellipse cx="0" cy="0" rx="5.5" ry="4.5" fill="url(#bowF)" stroke="#AD1457" stroke-width="0.8"/>
             <ellipse cx="0" cy="0" rx="2"   ry="1.5" fill="#FFD700"/>
           </g>
-          <ellipse cx="100" cy="115" rx="75" ry="68" fill="white" stroke="#E91E63" stroke-width="2.5"/>
-          <ellipse cx="55" cy="130" rx="13" ry="7.5" fill="#FFB3D9" opacity="0.8"/>
-          <ellipse cx="145" cy="130" rx="13" ry="7.5" fill="#FFB3D9" opacity="0.8"/>
 
           <ellipse cx="100" cy="115" rx="73" ry="66" fill="url(#faceF)" stroke="#E91E63" stroke-width="2.5"/>
           <ellipse cx="100" cy="165" rx="50" ry="8" fill="#E91E63" opacity="0.05"/>
 
           <!-- Heart eyes -->
-          <text x="75" y="113" font-size="22" text-anchor="middle">💗</text>
-          <text x="125" y="113" font-size="22" text-anchor="middle">💗</text>
-          <ellipse cx="100" cy="125" rx="5" ry="3.2" fill="#FFD700" stroke="#FFA000" stroke-width="0.8"/>
-          <!-- Big smile -->
-          <path d="M 88,132 Q 100,148 112,132" fill="#FF6FA5" stroke="black" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>
-          <path d="M 100,128 Q 100,140 92,142" fill="none" stroke="black" stroke-width="1.8" stroke-linecap="round"/>
-          <path d="M 100,128 Q 100,140 108,142" fill="none" stroke="black" stroke-width="1.8" stroke-linecap="round"/>
-          <line x1="30" y1="125" x2="65" y2="128" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
-          <line x1="30" y1="135" x2="65" y2="135" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
-          <line x1="30" y1="145" x2="65" y2="142" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
-          <line x1="135" y1="128" x2="170" y2="125" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
-          <line x1="135" y1="135" x2="170" y2="135" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
-          <line x1="135" y1="142" x2="170" y2="145" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
           <text x="75"  y="116" font-size="26" text-anchor="middle">💗</text>
           <text x="125" y="116" font-size="26" text-anchor="middle">💗</text>
 
@@ -296,16 +701,38 @@
         </svg>
       </div>
 
+      <h2 class="yay-text">yay!! 💕</h2>
+      <p class="sub-text">let's plan our little moment...</p>
+
+      <form id="planForm" novalidate>
+        <div class="form-group">
+          <label class="form-label" for="whenInput">🕐 when?</label>
+          <input class="form-input" type="text" id="whenInput" placeholder="tonight? tomorrow? 👀" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="howInput">💗 how?</label>
+          <input class="form-input" type="text" id="howInput" placeholder="soft and slow? wild? your pick..." required>
+        </div>
+
+        <button type="submit" class="submit-btn" id="submitBtn">send it 💌</button>
+        <div class="sending-msg" id="sendingMsg" aria-live="polite">
+          <span class="plane">💌</span>
+          <span>sending to daddy...</span>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== Screen 3: The Result ===== -->
+  <div class="screen" id="screen-result">
+    <div class="card" style="background: linear-gradient(135deg, rgba(255,255,255,0.95), rgba(255,235,245,0.95));">
       <div class="result-content">
         <!-- Petting scene: hand on top, kitty below -->
         <div class="petting-scene">
-          <!-- The patting hand -->
-          <svg class="patting-hand" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <!-- Realistic patting hand -->
           <svg class="patting-hand" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <defs>
-              <linearGradient id="cuffGrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stop-color="#FF8FB8"/>
               <linearGradient id="skinR" x1="50%" y1="0%" x2="50%" y2="100%">
                 <stop offset="0%"   stop-color="#FFE0BD"/>
                 <stop offset="100%" stop-color="#EFC098"/>
@@ -323,9 +750,6 @@
                 <stop offset="100%" stop-color="#FF6FA5"/>
               </linearGradient>
             </defs>
-            <!-- Sleeve cuff -->
-            <path d="M 22,78 Q 22,70 32,70 L 68,70 Q 78,70 78,78 L 78,100 L 22,100 Z" fill="url(#cuffGrad)" stroke="#C2185B" stroke-width="1.5" stroke-linejoin="round"/>
-            <path d="M 22,76 Q 22,70 32,70 L 68,70 Q 78,70 78,76" fill="none" stroke="white" stroke-width="1.5" opacity="0.7"/>
 
             <!-- Sleeve / forearm -->
             <path d="M 28,76 Q 28,66 38,66 L 62,66 Q 72,66 72,76 L 72,120 L 28,120 Z"
@@ -339,20 +763,9 @@
             <ellipse cx="50" cy="68" rx="20" ry="3" fill="url(#skinR)" stroke="#D4A07A" stroke-width="0.6"/>
 
             <!-- Palm -->
-            <ellipse cx="50" cy="62" rx="32" ry="20" fill="#FFD9B3" stroke="#C49070" stroke-width="1.5"/>
             <ellipse cx="50" cy="55" rx="26" ry="14" fill="url(#palmR)" stroke="#D4A07A" stroke-width="1"/>
 
             <!-- Thumb -->
-            <path d="M 23,60 Q 13,52 17,42 Q 23,36 30,42 Q 32,52 30,60 Z" fill="#FFD9B3" stroke="#C49070" stroke-width="1.3" stroke-linejoin="round"/>
-            <!-- 4 fingers -->
-            <path d="M 32,46 Q 30,30 37,28 Q 43,30 41,47 Z" fill="#FFD9B3" stroke="#C49070" stroke-width="1.3" stroke-linejoin="round"/>
-            <path d="M 43,44 Q 41,26 48,24 Q 55,26 53,45 Z" fill="#FFD9B3" stroke="#C49070" stroke-width="1.3" stroke-linejoin="round"/>
-            <path d="M 55,44 Q 53,26 60,24 Q 67,26 65,45 Z" fill="#FFD9B3" stroke="#C49070" stroke-width="1.3" stroke-linejoin="round"/>
-            <path d="M 66,46 Q 64,30 71,28 Q 78,30 76,47 Z" fill="#FFD9B3" stroke="#C49070" stroke-width="1.3" stroke-linejoin="round"/>
-            <!-- Highlights -->
-            <ellipse cx="47" cy="33" rx="1.5" ry="3" fill="#FFE4C4" opacity="0.8"/>
-            <ellipse cx="59" cy="33" rx="1.5" ry="3" fill="#FFE4C4" opacity="0.8"/>
-            <ellipse cx="42" cy="64" rx="10" ry="2.5" fill="#FFE4C4" opacity="0.5"/>
             <path d="M 24,53 Q 15,44 17,33 Q 23,27 30,31 Q 33,42 30,53 Z"
                   fill="url(#skinR)" stroke="#D4A07A" stroke-width="1" stroke-linejoin="round"/>
             <path d="M 22,42 Q 26,40 28,44" fill="none" stroke="#D4A07A" stroke-width="0.5" opacity="0.6"/>
@@ -384,7 +797,6 @@
             <ellipse cx="46" cy="52" rx="12" ry="2.5" fill="#FFF0DC" opacity="0.55"/>
           </svg>
 
-          <!-- The kitty being petted (closed eyes = content) -->
           <!-- Impact puffs at contact point -->
           <div class="impact-puff" aria-hidden="true">
             <span class="p1">💗</span>
@@ -417,14 +829,6 @@
             <!-- Ears -->
             <polygon points="40,70 55,25 90,60" fill="white" stroke="#E91E63" stroke-width="2.5" stroke-linejoin="round"/>
             <polygon points="110,60 145,25 160,70" fill="white" stroke="#E91E63" stroke-width="2.5" stroke-linejoin="round"/>
-            <polygon points="50,65 60,38 82,60" fill="#FFD9E8" opacity="0.6"/>
-            <polygon points="118,60 140,38 150,65" fill="#FFD9E8" opacity="0.6"/>
-            <!-- Bow -->
-            <g transform="translate(50, 35)">
-              <path d="M -22,-2 Q -16,-14 0,-9 Q 16,-14 22,-2 Q 16,10 0,5 Q -16,10 -22,-2 Z"
-                    fill="#E91E63" stroke="#C2185B" stroke-width="1.5" stroke-linejoin="round"/>
-              <circle r="6" fill="#FFD700" stroke="#FFA000" stroke-width="1"/>
-              <circle r="2.5" fill="#FFA000"/>
             <!-- Inner ear (gradient) -->
             <polygon points="55,38 73,42 80,62" fill="url(#earInnerR)" opacity="0.85"/>
             <polygon points="127,42 145,38 142,62" fill="url(#earInnerR)" opacity="0.85"/>
@@ -438,11 +842,6 @@
               <ellipse cx="0" cy="0" rx="5.5" ry="4.5" fill="url(#bowR)" stroke="#AD1457" stroke-width="0.8"/>
               <ellipse cx="0" cy="0" rx="2"   ry="1.5" fill="#FFD700"/>
             </g>
-            <!-- Face -->
-            <ellipse cx="100" cy="115" rx="75" ry="68" fill="white" stroke="#E91E63" stroke-width="2.5"/>
-            <!-- Blushy cheeks -->
-            <ellipse cx="55" cy="130" rx="15" ry="9" fill="#FFB3D9" opacity="0.9"/>
-            <ellipse cx="145" cy="130" rx="15" ry="9" fill="#FFB3D9" opacity="0.9"/>
 
             <!-- Face (with subtle gradient for depth) -->
             <ellipse cx="100" cy="115" rx="73" ry="66" fill="url(#faceR)" stroke="#E91E63" stroke-width="2.5"/>
@@ -450,19 +849,6 @@
             <ellipse cx="100" cy="165" rx="50" ry="8" fill="#E91E63" opacity="0.05"/>
 
             <!-- Closed content eyes ( ︶ ︶ ) -->
-            <path d="M 62,108 Q 75,98 88,108" fill="none" stroke="black" stroke-width="3" stroke-linecap="round"/>
-            <path d="M 112,108 Q 125,98 138,108" fill="none" stroke="black" stroke-width="3" stroke-linecap="round"/>
-            <!-- Nose -->
-            <ellipse cx="100" cy="125" rx="5" ry="3.2" fill="#FFD700" stroke="#FFA000" stroke-width="0.8"/>
-            <!-- Big happy smile -->
-            <path d="M 88,132 Q 100,150 112,132" fill="#FF6FA5" stroke="black" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>
-            <!-- Whiskers -->
-            <line x1="30" y1="125" x2="65" y2="128" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="30" y1="135" x2="65" y2="135" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="30" y1="145" x2="65" y2="142" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="135" y1="128" x2="170" y2="125" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="135" y1="135" x2="170" y2="135" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="135" y1="142" x2="170" y2="145" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
             <path d="M 60,108 Q 75,96  90,108" fill="none" stroke="#2C2C2C" stroke-width="3" stroke-linecap="round"/>
             <path d="M 110,108 Q 125,96 140,108" fill="none" stroke="#2C2C2C" stroke-width="3" stroke-linecap="round"/>
             <!-- Eyelash hints -->
@@ -493,3 +879,171 @@
           </svg>
 
           <!-- Floating hearts around the petting scene -->
+          <div class="hearts-around" aria-hidden="true">
+            <span style="left: 0;  top: 30px; animation-delay: 0s;">💗</span>
+            <span style="right: 0; top: 50px; animation-delay: 0.6s;">💖</span>
+            <span style="left: 4%;  top: 55%; animation-delay: 1.2s;">💕</span>
+            <span style="right: 4%; top: 60%; animation-delay: 0.3s;">💗</span>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 8px;"><span class="kiss">💋</span></div>
+        <h1 class="good-girl">good girl 💖</h1>
+        <p class="proud-text">daddy's so proud of you 🥰</p>
+
+        <div class="answer-display">
+          <div class="answer-item">
+            <strong>🕐 when:</strong>
+            <span id="displayWhen">—</span>
+          </div>
+          <div class="answer-item">
+            <strong>💗 how:</strong>
+            <span id="displayHow">—</span>
+          </div>
+        </div>
+
+        <p class="footer-note">can't wait for us 💕</p>
+      </div>
+
+      <span class="mega-heart" style="top: 18px;  left: 18px;">💗</span>
+      <span class="mega-heart" style="top: 30px;  right: 22px; animation-delay: 0.5s;">💖</span>
+      <span class="mega-heart" style="bottom: 50px; left: 24px; animation-delay: 1s;">💕</span>
+      <span class="mega-heart" style="bottom: 22px; right: 18px; animation-delay: 1.5s;">💗</span>
+    </div>
+  </div>
+</div>
+
+<div class="confetti-layer" id="confettiLayer" aria-hidden="true"></div>
+
+<script>
+  // ===== Floating background emojis =====
+  (function makeFloaters(){
+    const layer = document.getElementById('floatLayer');
+    const emojis = ['💗','💖','💕','💓','💝','✨','⭐','🌸','🎀','💞'];
+    for (let i = 0; i < 26; i++) {
+      const el = document.createElement('span');
+      el.className = 'floater';
+      el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+      el.style.left = (Math.random() * 100) + '%';
+      el.style.fontSize = (16 + Math.random() * 22) + 'px';
+      el.style.animationDuration = (12 + Math.random() * 16) + 's';
+      el.style.animationDelay = (Math.random() * 15) + 's';
+      el.style.opacity = (0.3 + Math.random() * 0.4);
+      layer.appendChild(el);
+    }
+  })();
+
+  // ===== No-button dodge behavior =====
+  const noBtn     = document.getElementById('noBtn');
+  const yesBtn    = document.getElementById('yesBtn');
+  const btnRow    = document.getElementById('btnRow');
+  const noTexts   = ['no', 'really? 🥺', 'are you sure?', 'think again...', 'pretty please? 💕', 'last chance!', 'okay... :('];
+  let dodgeCount  = 0;
+  let noHidden    = false;
+
+  function dodge(e){
+    if (noHidden) return;
+    if (e) { e.preventDefault(); e.stopPropagation(); }
+    dodgeCount++;
+
+    if (dodgeCount > 6) {
+      noBtn.style.transition = 'all 0.5s ease';
+      noBtn.style.transform  = 'scale(0)';
+      noBtn.style.opacity    = '0';
+      setTimeout(() => { noBtn.style.display = 'none'; }, 500);
+      noHidden = true;
+      return;
+    }
+
+    noBtn.classList.add('dodging');
+    const rowRect  = btnRow.getBoundingClientRect();
+    const btnRect  = noBtn.getBoundingClientRect();
+    const maxX = Math.max(0, rowRect.width  - btnRect.width);
+    const maxY = 90;
+    const newX = Math.random() * maxX;
+    const newY = (Math.random() - 0.5) * maxY;
+    noBtn.style.left = newX + 'px';
+    noBtn.style.top  = newY + 'px';
+    noBtn.style.transform = `rotate(${(Math.random()-0.5)*30}deg) scale(${Math.max(0.7, 1 - dodgeCount*0.08)})`;
+
+    if (noTexts[dodgeCount]) noBtn.textContent = noTexts[dodgeCount];
+
+    const grow = 1 + Math.min(dodgeCount, 5) * 0.05;
+    yesBtn.style.transform = `scale(${grow})`;
+  }
+
+  noBtn.addEventListener('mouseenter', dodge);
+  noBtn.addEventListener('touchstart', dodge, { passive: false });
+  noBtn.addEventListener('click', dodge);
+
+  // ===== Screen navigation =====
+  function goToScreen(id){
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    setTimeout(() => {
+      const el = document.getElementById(id);
+      if (el) el.classList.add('active');
+    }, 60);
+  }
+
+  yesBtn.addEventListener('click', () => goToScreen('screen-form'));
+
+  // ===== Form submit =====
+  document.getElementById('planForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const when = document.getElementById('whenInput').value.trim();
+    const how  = document.getElementById('howInput').value.trim();
+    if (!when || !how) {
+      const empty = !when ? document.getElementById('whenInput') : document.getElementById('howInput');
+      empty.focus();
+      empty.style.borderColor = '#E91E63';
+      empty.style.boxShadow = '0 0 0 5px rgba(233, 30, 99, 0.2)';
+      setTimeout(() => {
+        empty.style.borderColor = '';
+        empty.style.boxShadow = '';
+      }, 1500);
+      return;
+    }
+
+    // Show "sending..." state on the button + a small status line
+    const submitBtn = document.getElementById('submitBtn');
+    const sendMsg   = document.getElementById('sendingMsg');
+    submitBtn.classList.add('sending');
+    submitBtn.innerHTML = 'sending <span class="sending-dots"><i></i><i></i><i></i></span>';
+    sendMsg.classList.add('show');
+
+    // After 2 seconds, navigate to result screen with the petting kitty
+    setTimeout(() => {
+      document.getElementById('displayWhen').textContent = when;
+      document.getElementById('displayHow').textContent  = how;
+      sendMsg.classList.remove('show');
+      goToScreen('screen-result');
+      setTimeout(launchConfetti, 450);
+    }, 2000);
+  });
+
+  // ===== Confetti =====
+  function launchConfetti(){
+    const layer  = document.getElementById('confettiLayer');
+    const colors = ['#FF6FA5', '#FFB3D9', '#FFD700', '#E91E63', '#FF8FB8', '#FFFFFF', '#FFC1E3'];
+    const shapes = ['50%', '0%', '50% 0 50% 0'];
+    for (let i = 0; i < 90; i++) {
+      const c = document.createElement('div');
+      c.className = 'confetti';
+      c.style.left   = (Math.random() * 100) + '%';
+      c.style.top    = '-20px';
+      c.style.background = colors[Math.floor(Math.random() * colors.length)];
+      c.style.animationDuration = (2.2 + Math.random() * 2.2) + 's';
+      c.style.animationDelay    = (Math.random() * 1.6) + 's';
+      const size = 6 + Math.random() * 9;
+      c.style.width  = size + 'px';
+      c.style.height = size + 'px';
+      c.style.borderRadius = shapes[Math.floor(Math.random() * shapes.length)];
+      c.style.transform = `rotate(${Math.random()*360}deg)`;
+      layer.appendChild(c);
+    }
+    setTimeout(() => { layer.innerHTML = ''; }, 6000);
+  }
+</script>
+
+</body>
+</html>
