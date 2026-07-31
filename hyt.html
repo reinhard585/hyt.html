@@ -1,0 +1,495 @@
+
+  /* Patting scene (hand + kitty) on result screen */
+  .petting-scene {
+    position: relative;
+    width: 200px;
+    height: 210px;
+    margin: 0 auto 10px;
+    width: 220px;
+    height: 220px;
+    margin: 0 auto 14px;
+  }
+  .patting-hand {
+    position: absolute;
+    top: -8px;
+    top: -6px;
+    left: 50%;
+    margin-left: -42px;
+    width: 84px; height: 84px;
+    animation: pat 0.9s ease-in-out infinite;
+    filter: drop-shadow(0 6px 14px rgba(255, 105, 158, 0.4));
+    margin-left: -50px;
+    width: 100px; height: 110px;
+    animation: patRealistic 1.2s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+    filter: drop-shadow(0 8px 18px rgba(255, 105, 158, 0.4));
+    z-index: 5;
+    transform-origin: center 70%;
+    transform-origin: center 80%;
+  }
+  @keyframes pat {
+    0%, 100% { transform: translateY(0)    rotate(-10deg) scale(1);    }
+    45%      { transform: translateY(18px) rotate(12deg)  scale(0.95); }
+    55%      { transform: translateY(18px) rotate(12deg)  scale(0.95); }
+  @keyframes patRealistic {
+    0%, 100% { transform: translateY(0)    rotate(-3deg) scale(1);     }
+    25%      { transform: translateY(6px)  rotate(0deg)  scale(0.985); }
+    45%      { transform: translateY(22px) rotate(4deg)  scale(0.94);  }  /* contact */
+    55%      { transform: translateY(22px) rotate(4deg)  scale(0.94);  }  /* hold */
+    75%      { transform: translateY(6px)  rotate(0deg)  scale(0.985); }
+  }
+  .patting-kitty {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    margin-left: -75px;
+    width: 150px; height: 150px;
+    animation: headBob 0.9s ease-in-out infinite;
+    margin-left: -80px;
+    width: 160px; height: 160px;
+    animation: headReact 1.2s ease-in-out infinite;
+    filter: drop-shadow(0 8px 18px rgba(255, 105, 158, 0.3));
+    transform-origin: center 75%;
+  }
+  @keyframes headBob {
+    0%, 100% { transform: translateY(0)    rotate(0deg);  }
+    50%      { transform: translateY(-3px) rotate(-1deg); }
+  @keyframes headReact {
+    0%, 100% { transform: translateY(0)    scaleY(1)    scaleX(1);    }
+    45%, 55% { transform: translateY(3px)  scaleY(0.95) scaleX(1.025); }  /* squish on pat */
+  }
+  /* Impact puffs at contact moment */
+  .impact-puff {
+    position: absolute;
+    top: 30px;
+    left: 50%;
+    margin-left: -32px;
+    width: 64px;
+    height: 30px;
+    pointer-events: none;
+    z-index: 6;
+  }
+  .impact-puff span {
+    position: absolute;
+    font-size: 16px;
+    opacity: 0;
+    animation-duration: 1.2s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-out;
+  }
+  .impact-puff .p1 { left: 4px;  top: 0;    animation-name: puffLeft;  }
+  .impact-puff .p2 { right: 4px; top: 0;    animation-name: puffRight; }
+  .impact-puff .p3 { left: 50%;  margin-left: -8px; top: -4px; animation-name: puffCenter; }
+  @keyframes puffLeft {
+    0%, 42%   { opacity: 0; transform: translate(0, 0)         scale(0.4); }
+    50%       { opacity: 1; transform: translate(-2px, -2px)   scale(1);   }
+    100%      { opacity: 0; transform: translate(-16px, -20px) scale(0.55);}
+  }
+  @keyframes puffRight {
+    0%, 42%   { opacity: 0; transform: translate(0, 0)        scale(0.4); }
+    50%       { opacity: 1; transform: translate(2px, -2px)   scale(1);   }
+    100%      { opacity: 0; transform: translate(16px, -20px) scale(0.55);}
+  }
+  @keyframes puffCenter {
+    0%, 42%   { opacity: 0; transform: translate(-50%, 0)     scale(0.4); }
+    50%       { opacity: 1; transform: translate(-50%, -3px)  scale(1);   }
+    100%      { opacity: 0; transform: translate(-50%, -22px) scale(0.55);}
+  }
+  .hearts-around {
+    position: absolute;
+    inset: 0;
+    .kitty-container { width: 150px; height: 150px; }
+    .btn         { padding: 14px 30px; font-size: 16px; }
+    .btn-row     { min-height: 60px; }
+    .petting-scene { width: 180px; height: 195px; }
+    .patting-hand  { width: 70px; height: 70px; margin-left: -35px; }
+    .patting-kitty { width: 130px; height: 130px; margin-left: -65px; }
+    .petting-scene { width: 190px; height: 200px; }
+    .patting-hand  { width: 85px; height: 95px; margin-left: -42px; }
+    .patting-kitty { width: 135px; height: 135px; margin-left: -67px; }
+  }
+  @media (max-width: 360px) {
+    .question-text { font-size: 20px; }
+    <div class="card">
+      <div class="kitty-container">
+        <svg class="kitty-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <radialGradient id="faceQ" cx="50%" cy="35%" r="65%">
+              <stop offset="0%"   stop-color="#FFFFFF"/>
+              <stop offset="100%" stop-color="#FAF0F5"/>
+            </radialGradient>
+            <linearGradient id="bowQ" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%"   stop-color="#FF4081"/>
+              <stop offset="50%"  stop-color="#E91E63"/>
+              <stop offset="100%" stop-color="#AD1457"/>
+            </linearGradient>
+            <linearGradient id="earInnerQ" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%"   stop-color="#FFE0EC"/>
+              <stop offset="100%" stop-color="#FFC1D9"/>
+            </linearGradient>
+            <radialGradient id="cheekQ" cx="50%" cy="50%" r="50%">
+              <stop offset="0%"   stop-color="#FF8FB8" stop-opacity="0.7"/>
+              <stop offset="100%" stop-color="#FF8FB8" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+
+          <!-- Ears -->
+          <polygon points="40,70 55,25 90,60" fill="white" stroke="#E91E63" stroke-width="2.5" stroke-linejoin="round"/>
+          <polygon points="110,60 145,25 160,70" fill="white" stroke="#E91E63" stroke-width="2.5" stroke-linejoin="round"/>
+          <polygon points="50,65 60,38 82,60" fill="#FFD9E8" opacity="0.6"/>
+          <polygon points="118,60 140,38 150,65" fill="#FFD9E8" opacity="0.6"/>
+          <!-- Bow -->
+          <g transform="translate(50, 35)">
+            <path d="M -22,-2 Q -16,-14 0,-9 Q 16,-14 22,-2 Q 16,10 0,5 Q -16,10 -22,-2 Z"
+                  fill="#E91E63" stroke="#C2185B" stroke-width="1.5" stroke-linejoin="round"/>
+            <circle r="6" fill="#FFD700" stroke="#FFA000" stroke-width="1"/>
+            <circle r="2.5" fill="#FFA000"/>
+          <polygon points="55,38 73,42 80,62" fill="url(#earInnerQ)" opacity="0.85"/>
+          <polygon points="127,42 145,38 142,62" fill="url(#earInnerQ)" opacity="0.85"/>
+
+          <!-- Elegant bow with tails -->
+          <g transform="translate(50, 36)">
+            <path d="M 0,0 Q -12,-14 -22,-5 Q -25,4 -12,6 Q -4,4 0,0 Z" fill="url(#bowQ)" stroke="#AD1457" stroke-width="1.2" stroke-linejoin="round"/>
+            <path d="M 0,0 Q 12,-14 22,-5 Q 25,4 12,6 Q 4,4 0,0 Z"   fill="url(#bowQ)" stroke="#AD1457" stroke-width="1.2" stroke-linejoin="round"/>
+            <path d="M -2,4 L -10,20 L -3,18 L 0,8 Z"                 fill="url(#bowQ)" stroke="#AD1457" stroke-width="0.8" stroke-linejoin="round"/>
+            <path d="M  2,4 L  10,20 L  3,18 L 0,8 Z"                 fill="url(#bowQ)" stroke="#AD1457" stroke-width="0.8" stroke-linejoin="round"/>
+            <ellipse cx="0" cy="0" rx="5.5" ry="4.5" fill="url(#bowQ)" stroke="#AD1457" stroke-width="0.8"/>
+            <ellipse cx="0" cy="0" rx="2"   ry="1.5" fill="#FFD700"/>
+          </g>
+
+          <!-- Face -->
+          <ellipse cx="100" cy="115" rx="75" ry="68" fill="white" stroke="#E91E63" stroke-width="2.5"/>
+          <!-- Cheeks -->
+          <ellipse cx="55" cy="130" rx="13" ry="7.5" fill="#FFB3D9" opacity="0.7"/>
+          <ellipse cx="145" cy="130" rx="13" ry="7.5" fill="#FFB3D9" opacity="0.7"/>
+          <!-- Eyes -->
+          <ellipse class="eye" cx="75" cy="105" rx="6" ry="10" fill="black"/>
+          <ellipse class="eye" cx="125" cy="105" rx="6" ry="10" fill="black"/>
+          <circle cx="76.5" cy="101" r="2.2" fill="white"/>
+          <circle cx="126.5" cy="101" r="2.2" fill="white"/>
+          <!-- Nose -->
+          <ellipse cx="100" cy="125" rx="5" ry="3.2" fill="#FFD700" stroke="#FFA000" stroke-width="0.8"/>
+          <!-- Mouth -->
+          <path d="M 100,128 Q 100,140 92,142" fill="none" stroke="black" stroke-width="1.8" stroke-linecap="round"/>
+          <path d="M 100,128 Q 100,140 108,142" fill="none" stroke="black" stroke-width="1.8" stroke-linecap="round"/>
+          <!-- Whiskers -->
+          <line x1="30" y1="125" x2="65" y2="128" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="30" y1="135" x2="65" y2="135" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="30" y1="145" x2="65" y2="142" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="135" y1="128" x2="170" y2="125" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="135" y1="135" x2="170" y2="135" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="135" y1="142" x2="170" y2="145" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
+          <ellipse cx="100" cy="115" rx="73" ry="66" fill="url(#faceQ)" stroke="#E91E63" stroke-width="2.5"/>
+          <ellipse cx="100" cy="165" rx="50" ry="8" fill="#E91E63" opacity="0.05"/>
+
+          <!-- Open eyes (whites + pupils + highlights) -->
+          <ellipse class="eye" cx="75"  cy="108" rx="5" ry="8" fill="white" stroke="#2C2C2C" stroke-width="1.5"/>
+          <ellipse class="eye" cx="125" cy="108" rx="5" ry="8" fill="white" stroke="#2C2C2C" stroke-width="1.5"/>
+          <ellipse class="eye" cx="75"  cy="110" rx="3" ry="6" fill="#2C2C2C"/>
+          <ellipse class="eye" cx="125" cy="110" rx="3" ry="6" fill="#2C2C2C"/>
+          <circle cx="76.5"  cy="105" r="1.6" fill="white"/>
+          <circle cx="126.5" cy="105" r="1.6" fill="white"/>
+
+          <!-- Blushy cheeks -->
+          <ellipse cx="55"  cy="132" rx="13" ry="7.5" fill="url(#cheekQ)"/>
+          <ellipse cx="145" cy="132" rx="13" ry="7.5" fill="url(#cheekQ)"/>
+
+          <!-- Nose with highlight -->
+          <ellipse cx="100" cy="125" rx="4.5" ry="3" fill="#FFD700" stroke="#FFA000" stroke-width="0.6"/>
+          <ellipse cx="99"  cy="124" rx="1.5" ry="0.8" fill="#FFFAF0" opacity="0.85"/>
+
+          <!-- Small soft smile -->
+          <path d="M 92,132 Q 100,140 108,132" fill="none" stroke="#2C2C2C" stroke-width="1.8" stroke-linecap="round"/>
+
+          <!-- Refined curved whiskers -->
+          <path d="M 22,128 Q 45,130 65,130" fill="none" stroke="#2C2C2C" stroke-width="1.3" stroke-linecap="round"/>
+          <path d="M 22,138 Q 45,138 65,138" fill="none" stroke="#2C2C2C" stroke-width="1.3" stroke-linecap="round"/>
+          <path d="M 22,148 Q 45,145 65,146" fill="none" stroke="#2C2C2C" stroke-width="1.3" stroke-linecap="round"/>
+          <path d="M 178,128 Q 155,130 135,130" fill="none" stroke="#2C2C2C" stroke-width="1.3" stroke-linecap="round"/>
+          <path d="M 178,138 Q 155,138 135,138" fill="none" stroke="#2C2C2C" stroke-width="1.3" stroke-linecap="round"/>
+          <path d="M 178,148 Q 155,145 135,146" fill="none" stroke="#2C2C2C" stroke-width="1.3" stroke-linecap="round"/>
+        </svg>
+        <div class="kitty-sparkles" aria-hidden="true">
+          <span class="sp" style="top:-8px; left:0;  font-size:20px; animation-delay:0s;">✨</span>
+    <div class="card">
+      <div class="kitty-container" style="width:130px; height:130px; margin-bottom:15px;">
+        <svg class="kitty-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <radialGradient id="faceF" cx="50%" cy="35%" r="65%">
+              <stop offset="0%"   stop-color="#FFFFFF"/>
+              <stop offset="100%" stop-color="#FAF0F5"/>
+            </radialGradient>
+            <linearGradient id="bowF" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%"   stop-color="#FF4081"/>
+              <stop offset="50%"  stop-color="#E91E63"/>
+              <stop offset="100%" stop-color="#AD1457"/>
+            </linearGradient>
+            <linearGradient id="earInnerF" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%"   stop-color="#FFE0EC"/>
+              <stop offset="100%" stop-color="#FFC1D9"/>
+            </linearGradient>
+            <radialGradient id="cheekF" cx="50%" cy="50%" r="50%">
+              <stop offset="0%"   stop-color="#FF8FB8" stop-opacity="0.85"/>
+              <stop offset="100%" stop-color="#FF8FB8" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+
+          <polygon points="40,70 55,25 90,60" fill="white" stroke="#E91E63" stroke-width="2.5" stroke-linejoin="round"/>
+          <polygon points="110,60 145,25 160,70" fill="white" stroke="#E91E63" stroke-width="2.5" stroke-linejoin="round"/>
+          <polygon points="50,65 60,38 82,60" fill="#FFD9E8" opacity="0.6"/>
+          <polygon points="118,60 140,38 150,65" fill="#FFD9E8" opacity="0.6"/>
+          <g transform="translate(50, 35)">
+            <path d="M -22,-2 Q -16,-14 0,-9 Q 16,-14 22,-2 Q 16,10 0,5 Q -16,10 -22,-2 Z"
+                  fill="#E91E63" stroke="#C2185B" stroke-width="1.5" stroke-linejoin="round"/>
+            <circle r="6" fill="#FFD700" stroke="#FFA000" stroke-width="1"/>
+            <circle r="2.5" fill="#FFA000"/>
+          <polygon points="55,38 73,42 80,62" fill="url(#earInnerF)" opacity="0.85"/>
+          <polygon points="127,42 145,38 142,62" fill="url(#earInnerF)" opacity="0.85"/>
+
+          <g transform="translate(50, 36)">
+            <path d="M 0,0 Q -12,-14 -22,-5 Q -25,4 -12,6 Q -4,4 0,0 Z" fill="url(#bowF)" stroke="#AD1457" stroke-width="1.2" stroke-linejoin="round"/>
+            <path d="M 0,0 Q 12,-14 22,-5 Q 25,4 12,6 Q 4,4 0,0 Z"   fill="url(#bowF)" stroke="#AD1457" stroke-width="1.2" stroke-linejoin="round"/>
+            <path d="M -2,4 L -10,20 L -3,18 L 0,8 Z"                 fill="url(#bowF)" stroke="#AD1457" stroke-width="0.8" stroke-linejoin="round"/>
+            <path d="M  2,4 L  10,20 L  3,18 L 0,8 Z"                 fill="url(#bowF)" stroke="#AD1457" stroke-width="0.8" stroke-linejoin="round"/>
+            <ellipse cx="0" cy="0" rx="5.5" ry="4.5" fill="url(#bowF)" stroke="#AD1457" stroke-width="0.8"/>
+            <ellipse cx="0" cy="0" rx="2"   ry="1.5" fill="#FFD700"/>
+          </g>
+          <ellipse cx="100" cy="115" rx="75" ry="68" fill="white" stroke="#E91E63" stroke-width="2.5"/>
+          <ellipse cx="55" cy="130" rx="13" ry="7.5" fill="#FFB3D9" opacity="0.8"/>
+          <ellipse cx="145" cy="130" rx="13" ry="7.5" fill="#FFB3D9" opacity="0.8"/>
+
+          <ellipse cx="100" cy="115" rx="73" ry="66" fill="url(#faceF)" stroke="#E91E63" stroke-width="2.5"/>
+          <ellipse cx="100" cy="165" rx="50" ry="8" fill="#E91E63" opacity="0.05"/>
+
+          <!-- Heart eyes -->
+          <text x="75" y="113" font-size="22" text-anchor="middle">💗</text>
+          <text x="125" y="113" font-size="22" text-anchor="middle">💗</text>
+          <ellipse cx="100" cy="125" rx="5" ry="3.2" fill="#FFD700" stroke="#FFA000" stroke-width="0.8"/>
+          <!-- Big smile -->
+          <path d="M 88,132 Q 100,148 112,132" fill="#FF6FA5" stroke="black" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>
+          <path d="M 100,128 Q 100,140 92,142" fill="none" stroke="black" stroke-width="1.8" stroke-linecap="round"/>
+          <path d="M 100,128 Q 100,140 108,142" fill="none" stroke="black" stroke-width="1.8" stroke-linecap="round"/>
+          <line x1="30" y1="125" x2="65" y2="128" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="30" y1="135" x2="65" y2="135" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="30" y1="145" x2="65" y2="142" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="135" y1="128" x2="170" y2="125" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="135" y1="135" x2="170" y2="135" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
+          <line x1="135" y1="142" x2="170" y2="145" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
+          <text x="75"  y="116" font-size="26" text-anchor="middle">💗</text>
+          <text x="125" y="116" font-size="26" text-anchor="middle">💗</text>
+
+          <ellipse cx="55"  cy="132" rx="14" ry="8" fill="url(#cheekF)"/>
+          <ellipse cx="145" cy="132" rx="14" ry="8" fill="url(#cheekF)"/>
+
+          <ellipse cx="100" cy="125" rx="4.5" ry="3" fill="#FFD700" stroke="#FFA000" stroke-width="0.6"/>
+          <ellipse cx="99"  cy="124" rx="1.5" ry="0.8" fill="#FFFAF0" opacity="0.85"/>
+
+          <!-- Big open happy smile with tongue -->
+          <path d="M 86,132 Q 100,152 114,132" fill="#FF6FA5" stroke="#2C2C2C" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>
+          <path d="M 92,140 Q 100,150 108,140" fill="#FF8FB8"/>
+
+          <path d="M 22,128 Q 45,130 65,130" fill="none" stroke="#2C2C2C" stroke-width="1.3" stroke-linecap="round"/>
+          <path d="M 22,138 Q 45,138 65,138" fill="none" stroke="#2C2C2C" stroke-width="1.3" stroke-linecap="round"/>
+          <path d="M 22,148 Q 45,145 65,146" fill="none" stroke="#2C2C2C" stroke-width="1.3" stroke-linecap="round"/>
+          <path d="M 178,128 Q 155,130 135,130" fill="none" stroke="#2C2C2C" stroke-width="1.3" stroke-linecap="round"/>
+          <path d="M 178,138 Q 155,138 135,138" fill="none" stroke="#2C2C2C" stroke-width="1.3" stroke-linecap="round"/>
+          <path d="M 178,148 Q 155,145 135,146" fill="none" stroke="#2C2C2C" stroke-width="1.3" stroke-linecap="round"/>
+        </svg>
+      </div>
+
+      <div class="result-content">
+        <!-- Petting scene: hand on top, kitty below -->
+        <div class="petting-scene">
+          <!-- The patting hand -->
+          <svg class="patting-hand" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <!-- Realistic patting hand -->
+          <svg class="patting-hand" viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <defs>
+              <linearGradient id="cuffGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#FF8FB8"/>
+              <linearGradient id="skinR" x1="50%" y1="0%" x2="50%" y2="100%">
+                <stop offset="0%"   stop-color="#FFE0BD"/>
+                <stop offset="100%" stop-color="#EFC098"/>
+              </linearGradient>
+              <linearGradient id="palmR" x1="50%" y1="0%" x2="50%" y2="100%">
+                <stop offset="0%"   stop-color="#FFE8C8"/>
+                <stop offset="100%" stop-color="#F2C19C"/>
+              </linearGradient>
+              <linearGradient id="sleeveR" x1="50%" y1="0%" x2="50%" y2="100%">
+                <stop offset="0%"   stop-color="#FF8FB8"/>
+                <stop offset="100%" stop-color="#E91E63"/>
+              </linearGradient>
+              <linearGradient id="cuffR" x1="50%" y1="0%" x2="50%" y2="100%">
+                <stop offset="0%"   stop-color="#FFB0CC"/>
+                <stop offset="100%" stop-color="#FF6FA5"/>
+              </linearGradient>
+            </defs>
+            <!-- Sleeve cuff -->
+            <path d="M 22,78 Q 22,70 32,70 L 68,70 Q 78,70 78,78 L 78,100 L 22,100 Z" fill="url(#cuffGrad)" stroke="#C2185B" stroke-width="1.5" stroke-linejoin="round"/>
+            <path d="M 22,76 Q 22,70 32,70 L 68,70 Q 78,70 78,76" fill="none" stroke="white" stroke-width="1.5" opacity="0.7"/>
+
+            <!-- Sleeve / forearm -->
+            <path d="M 28,76 Q 28,66 38,66 L 62,66 Q 72,66 72,76 L 72,120 L 28,120 Z"
+                  fill="url(#sleeveR)" stroke="#C2185B" stroke-width="1.4" stroke-linejoin="round"/>
+            <!-- Cuff -->
+            <path d="M 26,70 Q 26,64 36,64 L 64,64 Q 74,64 74,70 L 74,79 L 26,79 Z"
+                  fill="url(#cuffR)" stroke="#C2185B" stroke-width="1" stroke-linejoin="round"/>
+            <line x1="28" y1="73" x2="72" y2="73" stroke="white" stroke-width="0.8" opacity="0.55"/>
+
+            <!-- Wrist -->
+            <ellipse cx="50" cy="68" rx="20" ry="3" fill="url(#skinR)" stroke="#D4A07A" stroke-width="0.6"/>
+
+            <!-- Palm -->
+            <ellipse cx="50" cy="62" rx="32" ry="20" fill="#FFD9B3" stroke="#C49070" stroke-width="1.5"/>
+            <ellipse cx="50" cy="55" rx="26" ry="14" fill="url(#palmR)" stroke="#D4A07A" stroke-width="1"/>
+
+            <!-- Thumb -->
+            <path d="M 23,60 Q 13,52 17,42 Q 23,36 30,42 Q 32,52 30,60 Z" fill="#FFD9B3" stroke="#C49070" stroke-width="1.3" stroke-linejoin="round"/>
+            <!-- 4 fingers -->
+            <path d="M 32,46 Q 30,30 37,28 Q 43,30 41,47 Z" fill="#FFD9B3" stroke="#C49070" stroke-width="1.3" stroke-linejoin="round"/>
+            <path d="M 43,44 Q 41,26 48,24 Q 55,26 53,45 Z" fill="#FFD9B3" stroke="#C49070" stroke-width="1.3" stroke-linejoin="round"/>
+            <path d="M 55,44 Q 53,26 60,24 Q 67,26 65,45 Z" fill="#FFD9B3" stroke="#C49070" stroke-width="1.3" stroke-linejoin="round"/>
+            <path d="M 66,46 Q 64,30 71,28 Q 78,30 76,47 Z" fill="#FFD9B3" stroke="#C49070" stroke-width="1.3" stroke-linejoin="round"/>
+            <!-- Highlights -->
+            <ellipse cx="47" cy="33" rx="1.5" ry="3" fill="#FFE4C4" opacity="0.8"/>
+            <ellipse cx="59" cy="33" rx="1.5" ry="3" fill="#FFE4C4" opacity="0.8"/>
+            <ellipse cx="42" cy="64" rx="10" ry="2.5" fill="#FFE4C4" opacity="0.5"/>
+            <path d="M 24,53 Q 15,44 17,33 Q 23,27 30,31 Q 33,42 30,53 Z"
+                  fill="url(#skinR)" stroke="#D4A07A" stroke-width="1" stroke-linejoin="round"/>
+            <path d="M 22,42 Q 26,40 28,44" fill="none" stroke="#D4A07A" stroke-width="0.5" opacity="0.6"/>
+
+            <!-- Index finger -->
+            <path d="M 32,46 Q 30,30 35,24 Q 41,24 41,46 Z"
+                  fill="url(#skinR)" stroke="#D4A07A" stroke-width="1" stroke-linejoin="round"/>
+            <!-- Middle finger -->
+            <path d="M 42,44 Q 40,24 47,18 Q 53,20 52,44 Z"
+                  fill="url(#skinR)" stroke="#D4A07A" stroke-width="1" stroke-linejoin="round"/>
+            <!-- Ring finger -->
+            <path d="M 52,44 Q 50,24 57,18 Q 63,20 62,44 Z"
+                  fill="url(#skinR)" stroke="#D4A07A" stroke-width="1" stroke-linejoin="round"/>
+            <!-- Pinky -->
+            <path d="M 62,46 Q 60,30 65,24 Q 71,24 70,46 Z"
+                  fill="url(#skinR)" stroke="#D4A07A" stroke-width="1" stroke-linejoin="round"/>
+
+            <!-- Knuckle creases -->
+            <path d="M 33,38 Q 36,36 40,38" fill="none" stroke="#D4A07A" stroke-width="0.5" opacity="0.55"/>
+            <path d="M 43,36 Q 47,34 51,36" fill="none" stroke="#D4A07A" stroke-width="0.5" opacity="0.55"/>
+            <path d="M 53,36 Q 57,34 61,36" fill="none" stroke="#D4A07A" stroke-width="0.5" opacity="0.55"/>
+            <path d="M 63,38 Q 65,36 69,38" fill="none" stroke="#D4A07A" stroke-width="0.5" opacity="0.55"/>
+
+            <!-- Finger highlights -->
+            <ellipse cx="47" cy="24" rx="0.8" ry="2.5" fill="#FFF0DC" opacity="0.75"/>
+            <ellipse cx="57" cy="24" rx="0.8" ry="2.5" fill="#FFF0DC" opacity="0.75"/>
+
+            <!-- Palm highlight -->
+            <ellipse cx="46" cy="52" rx="12" ry="2.5" fill="#FFF0DC" opacity="0.55"/>
+          </svg>
+
+          <!-- The kitty being petted (closed eyes = content) -->
+          <!-- Impact puffs at contact point -->
+          <div class="impact-puff" aria-hidden="true">
+            <span class="p1">💗</span>
+            <span class="p2">💖</span>
+            <span class="p3">✨</span>
+          </div>
+
+          <!-- Professional kitty being petted (closed eyes, content) -->
+          <svg class="patting-kitty" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <defs>
+              <radialGradient id="faceR" cx="50%" cy="35%" r="65%">
+                <stop offset="0%"   stop-color="#FFFFFF"/>
+                <stop offset="100%" stop-color="#FAF0F5"/>
+              </radialGradient>
+              <linearGradient id="bowR" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%"   stop-color="#FF4081"/>
+                <stop offset="50%"  stop-color="#E91E63"/>
+                <stop offset="100%" stop-color="#AD1457"/>
+              </linearGradient>
+              <linearGradient id="earInnerR" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%"   stop-color="#FFE0EC"/>
+                <stop offset="100%" stop-color="#FFC1D9"/>
+              </linearGradient>
+              <radialGradient id="cheekR" cx="50%" cy="50%" r="50%">
+                <stop offset="0%"   stop-color="#FF8FB8" stop-opacity="0.85"/>
+                <stop offset="100%" stop-color="#FF8FB8" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+
+            <!-- Ears -->
+            <polygon points="40,70 55,25 90,60" fill="white" stroke="#E91E63" stroke-width="2.5" stroke-linejoin="round"/>
+            <polygon points="110,60 145,25 160,70" fill="white" stroke="#E91E63" stroke-width="2.5" stroke-linejoin="round"/>
+            <polygon points="50,65 60,38 82,60" fill="#FFD9E8" opacity="0.6"/>
+            <polygon points="118,60 140,38 150,65" fill="#FFD9E8" opacity="0.6"/>
+            <!-- Bow -->
+            <g transform="translate(50, 35)">
+              <path d="M -22,-2 Q -16,-14 0,-9 Q 16,-14 22,-2 Q 16,10 0,5 Q -16,10 -22,-2 Z"
+                    fill="#E91E63" stroke="#C2185B" stroke-width="1.5" stroke-linejoin="round"/>
+              <circle r="6" fill="#FFD700" stroke="#FFA000" stroke-width="1"/>
+              <circle r="2.5" fill="#FFA000"/>
+            <!-- Inner ear (gradient) -->
+            <polygon points="55,38 73,42 80,62" fill="url(#earInnerR)" opacity="0.85"/>
+            <polygon points="127,42 145,38 142,62" fill="url(#earInnerR)" opacity="0.85"/>
+
+            <!-- Elegant bow with tails -->
+            <g transform="translate(50, 36)">
+              <path d="M 0,0 Q -12,-14 -22,-5 Q -25,4 -12,6 Q -4,4 0,0 Z" fill="url(#bowR)" stroke="#AD1457" stroke-width="1.2" stroke-linejoin="round"/>
+              <path d="M 0,0 Q 12,-14 22,-5 Q 25,4 12,6 Q 4,4 0,0 Z"   fill="url(#bowR)" stroke="#AD1457" stroke-width="1.2" stroke-linejoin="round"/>
+              <path d="M -2,4 L -10,20 L -3,18 L 0,8 Z"                 fill="url(#bowR)" stroke="#AD1457" stroke-width="0.8" stroke-linejoin="round"/>
+              <path d="M  2,4 L  10,20 L  3,18 L 0,8 Z"                 fill="url(#bowR)" stroke="#AD1457" stroke-width="0.8" stroke-linejoin="round"/>
+              <ellipse cx="0" cy="0" rx="5.5" ry="4.5" fill="url(#bowR)" stroke="#AD1457" stroke-width="0.8"/>
+              <ellipse cx="0" cy="0" rx="2"   ry="1.5" fill="#FFD700"/>
+            </g>
+            <!-- Face -->
+            <ellipse cx="100" cy="115" rx="75" ry="68" fill="white" stroke="#E91E63" stroke-width="2.5"/>
+            <!-- Blushy cheeks -->
+            <ellipse cx="55" cy="130" rx="15" ry="9" fill="#FFB3D9" opacity="0.9"/>
+            <ellipse cx="145" cy="130" rx="15" ry="9" fill="#FFB3D9" opacity="0.9"/>
+
+            <!-- Face (with subtle gradient for depth) -->
+            <ellipse cx="100" cy="115" rx="73" ry="66" fill="url(#faceR)" stroke="#E91E63" stroke-width="2.5"/>
+            <!-- Subtle chin shadow -->
+            <ellipse cx="100" cy="165" rx="50" ry="8" fill="#E91E63" opacity="0.05"/>
+
+            <!-- Closed content eyes ( ︶ ︶ ) -->
+            <path d="M 62,108 Q 75,98 88,108" fill="none" stroke="black" stroke-width="3" stroke-linecap="round"/>
+            <path d="M 112,108 Q 125,98 138,108" fill="none" stroke="black" stroke-width="3" stroke-linecap="round"/>
+            <!-- Nose -->
+            <ellipse cx="100" cy="125" rx="5" ry="3.2" fill="#FFD700" stroke="#FFA000" stroke-width="0.8"/>
+            <!-- Big happy smile -->
+            <path d="M 88,132 Q 100,150 112,132" fill="#FF6FA5" stroke="black" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>
+            <!-- Whiskers -->
+            <line x1="30" y1="125" x2="65" y2="128" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="30" y1="135" x2="65" y2="135" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="30" y1="145" x2="65" y2="142" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="135" y1="128" x2="170" y2="125" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="135" y1="135" x2="170" y2="135" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="135" y1="142" x2="170" y2="145" stroke="black" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M 60,108 Q 75,96  90,108" fill="none" stroke="#2C2C2C" stroke-width="3" stroke-linecap="round"/>
+            <path d="M 110,108 Q 125,96 140,108" fill="none" stroke="#2C2C2C" stroke-width="3" stroke-linecap="round"/>
+            <!-- Eyelash hints -->
+            <path d="M 64,104 L 60,99"   stroke="#2C2C2C" stroke-width="1.3" stroke-linecap="round"/>
+            <path d="M 86,104 L 90,99"   stroke="#2C2C2C" stroke-width="1.3" stroke-linecap="round"/>
+            <path d="M 114,104 L 110,99" stroke="#2C2C2C" stroke-width="1.3" stroke-linecap="round"/>
+            <path d="M 136,104 L 140,99" stroke="#2C2C2C" stroke-width="1.3" stroke-linecap="round"/>
+
+            <!-- Blushy cheeks (gradient) -->
+            <ellipse cx="55"  cy="132" rx="15" ry="9" fill="url(#cheekR)"/>
+            <ellipse cx="145" cy="132" rx="15" ry="9" fill="url(#cheekR)"/>
+
+            <!-- Nose with highlight -->
+            <ellipse cx="100" cy="125" rx="4.5" ry="3" fill="#FFD700" stroke="#FFA000" stroke-width="0.6"/>
+            <ellipse cx="99"  cy="124" rx="1.5" ry="0.8" fill="#FFFAF0" opacity="0.85"/>
+
+            <!-- Open happy smile with little tongue -->
+            <path d="M 86,132 Q 100,152 114,132" fill="#FF6FA5" stroke="#2C2C2C" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"/>
+            <path d="M 92,140 Q 100,150 108,140" fill="#FF8FB8"/>
+
+            <!-- Refined curved whiskers -->
+            <path d="M 22,128 Q 45,130 65,130" fill="none" stroke="#2C2C2C" stroke-width="1.3" stroke-linecap="round"/>
+            <path d="M 22,138 Q 45,138 65,138" fill="none" stroke="#2C2C2C" stroke-width="1.3" stroke-linecap="round"/>
+            <path d="M 22,148 Q 45,145 65,146" fill="none" stroke="#2C2C2C" stroke-width="1.3" stroke-linecap="round"/>
+            <path d="M 178,128 Q 155,130 135,130" fill="none" stroke="#2C2C2C" stroke-width="1.3" stroke-linecap="round"/>
+            <path d="M 178,138 Q 155,138 135,138" fill="none" stroke="#2C2C2C" stroke-width="1.3" stroke-linecap="round"/>
+            <path d="M 178,148 Q 155,145 135,146" fill="none" stroke="#2C2C2C" stroke-width="1.3" stroke-linecap="round"/>
+          </svg>
+
+          <!-- Floating hearts around the petting scene -->
